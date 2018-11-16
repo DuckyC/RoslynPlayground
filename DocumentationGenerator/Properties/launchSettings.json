@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DocumentationGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\mj\\source\\repos\\RoslynPlayground\\RoslynPlayground.sln\" \"C:\\Users\\mj\\Documents\\docout\""
+    }
+  }
+}

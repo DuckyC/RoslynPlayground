@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+namespace DocumentationModels
+{
+    public static class DiskProvider
+    {
+
+        private static readonly XmlSerializer Serializer;
+
+        static DiskProvider()
+        {
+            Serializer = new XmlSerializer(typeof(Namespace));
+        }
+
+        public static void Save(string path, List<Namespace> namespaces)
+        {
+            if(Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            Directory.CreateDirectory(path);
+            
+            foreach (var ns in namespaces)
+            {
+                using (var fs = File.Create(Path.Combine(path, ns.FullName + ".txt")))
+                {
+                    Serializer.Serialize(fs, ns);
+                }
+            }
+
+        }
+
+        public static List<Namespace> Load(string path)
+        {
+            return null;
+        }
+    }
+}
