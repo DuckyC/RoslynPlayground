@@ -1,0 +1,42 @@
+﻿@using DocumentationViewer.Models
+@model ClassViewModel
+
+
+<div>
+    <h4>@Model.Instance.Name Class</h4>
+    <h5>Namespace: @Html.ActionLink(Model.Instance.ParentFullName, "Index", new { FullName = Model.Instance.ParentFullName })</h5>
+    <hr />
+    <p>
+        @Model.Summary
+    </p>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance.Modifiers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance.Modifiers)
+        </dd>
+    </dl>
+
+    @Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Constructors", Items = Model.Constructors.Cast<ItemViewModel>().ToList() })
+    @Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Fields", Items = Model.Fields.Cast<ItemViewModel>().ToList() })
+    @Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Properties", Items = Model.Properties.Cast<ItemViewModel>().ToList() })
+    @Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Methods", Items = Model.Methods.Cast<ItemViewModel>().ToList() })
+</div>

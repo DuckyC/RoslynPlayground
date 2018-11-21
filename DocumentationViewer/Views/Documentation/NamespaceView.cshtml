@@ -1,0 +1,17 @@
+﻿@using DocumentationViewer.Models
+@model NamespaceViewModel
+
+@{
+    ViewBag.Title = "NamespaceView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.DisplayName Namespace</h2>
+
+<p>
+    @Model.Summary
+</p>
+
+@Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Classes", Items = Model.Classes.Cast<ItemViewModel>().ToList() })
+@Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Interfaces", Items = Model.Interfaces.Cast<ItemViewModel>().ToList() })
+@Html.Partial("~/Views/Shared/_ItemList.cshtml", new DeclarationListViewModel { Title = "Enums", Items = Model.Enums.Cast<ItemViewModel>().ToList() })

@@ -46,6 +46,7 @@
     <Compile Include="DocumentationComment.cs" />
     <Compile Include="DeclarationContainer.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="ItemDeclaration.cs" />

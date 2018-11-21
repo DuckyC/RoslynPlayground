@@ -9,12 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+namespace DocumentationModels.Property
+{
+
+}
+
 namespace DocumentationGenerator
 {
     public static class Extensions
     {
-        public static ClassDeclarationSyntax hello;
-        public const string NESTED_CLASS_DELIMITER = ".";
+        public const string NESTED_CLASS_DELIMITER = "+";
         public const string NAMESPACE_CLASS_DELIMITER = ".";
 
         public static string GetFullName(this ClassDeclarationSyntax sourceNode)
@@ -43,11 +47,19 @@ namespace DocumentationGenerator
 
             if (node.Parent is NamespaceDeclarationSyntax  nameSpace)
             {
-                return nameSpace.Name + "." + node.Identifier.Text;
+                return nameSpace.Name + NAMESPACE_CLASS_DELIMITER + node.Identifier.Text;
             }
 
             return node.Identifier.Text;
         }
+
+        //public static string GetFullName(this BasePropertyDeclarationSyntax node)
+        //{
+        //    if (node.Parent is BaseTypeDeclarationSyntax baseType)
+        //    {
+        //        return baseType.GetFullName() + 
+        //    }
+        //}
 
         public static string GetTypeName(this ITypeSymbol s)
         {
@@ -124,10 +136,10 @@ namespace DocumentationGenerator
         }
 
         /// <summary>
-        /// 
+        /// This method will turn an xml representation of a documentation comment into the C# model
         /// </summary>
-        /// <param name="xmlString"></param>
-        /// <returns></returns>
+        /// <param name="xmlString">The string that represents the documentation model</param>
+        /// <returns>The model</returns>
         public static DocumentationComment ParseDocumentationComment(string xmlString)
         {
             if (string.IsNullOrWhiteSpace(xmlString)) { return null; }

@@ -1,0 +1,19 @@
+﻿@model DocumentationViewer.Models.DeclarationListViewModel
+@if (Model.Items != null && Model.Items.Count > 0)
+{
+    <h4>@Model.Title</h4>
+    <table class="table">
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.DisplayName, "Index", new { FullName = item.ItemInstance.FullName })
+                </td>
+                <td>
+                    @item.Summary
+                </td>
+            </tr>
+        }
+
+    </table>
+}

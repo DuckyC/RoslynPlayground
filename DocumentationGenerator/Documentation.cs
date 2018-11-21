@@ -55,14 +55,45 @@ namespace DocumentationGenerator
             var semanticModel = compilation.GetSemanticModel(tree);
             var symbol = semanticModel.GetDeclaredSymbol(node);
 
+            if (symbol != null)
+            {
+                item.FullName = symbol.ToString();
+                item.DocumentationComment = Extensions.ParseDocumentationComment(symbol.GetDocumentationCommentXml());
+            }
+
             if (node is BaseTypeDeclarationSyntax baseType)
             {
-                item.FullName = baseType.GetFullName();
                 item.Name = baseType.Identifier.Text;
                 item.Modifiers = baseType.Modifiers.ToString();
             }
 
-            item.DocumentationComment = Extensions.ParseDocumentationComment(symbol.GetDocumentationCommentXml());
+            if (node is BaseFieldDeclarationSyntax baseField)
+            {
+                item.Modifiers = baseField.Modifiers.ToString();
+            }
+
+            if (node is PropertyDeclarationSyntax baseProperty)
+            {
+                item.Name = baseProperty.Identifier.Text;
+                item.Modifiers = baseProperty.Modifiers.ToString();
+            }
+
+            if (node is MethodDeclarationSyntax baseMethod)
+            {
+                item.Name = baseMethod.Identifier.Text;
+                item.Modifiers = baseMethod.Modifiers.ToString();
+            }
+
+            if (node.Parent is NamespaceDeclarationSyntax parentNamespace)
+            {
+                item.ParentFullName = parentNamespace.Name.ToString();
+
+            }
+            else if (node.Parent is ClassDeclarationSyntax parentClass)
+            {
+                item.ParentFullName = parentClass.GetFullName();
+            }
+
             //TODO: Add attributes
 
 
@@ -95,18 +126,23 @@ namespace DocumentationGenerator
 
         private List<Field> Visit(Compilation compilation, SyntaxTree tree, FieldDeclarationSyntax fieldDeclaration)
         {
-
+            var semanticModel = compilation.GetSemanticModel(tree);
             var typeReference = Visit(compilation, tree, fieldDeclaration.Declaration.Type);
 
             var fieldList = new List<Field>();
 
             foreach (var variable in fieldDeclaration.Declaration.Variables)
             {
-                fieldList.Add(new Field
+                var symbol = semanticModel.GetDeclaredSymbol(variable);
+
+                var newField = new Field
                 {
                     Name = variable.Identifier.Text,
                     Type = typeReference,
-                });
+                    FullName = symbol?.ToString(),
+                };
+                InsertItemDeclarationInformation(compilation, tree, fieldDeclaration, newField);
+                fieldList.Add(newField);
 
             }
 
@@ -115,13 +151,16 @@ namespace DocumentationGenerator
 
         private Property Visit(Compilation compilation, SyntaxTree tree, PropertyDeclarationSyntax propertyDeclaration)
         {
-            return new Property
+            var newProperty = new Property
             {
-                Name = propertyDeclaration.Identifier.Text,
                 Type = Visit(compilation, tree, propertyDeclaration.Type),
                 HasGetter = propertyDeclaration.AccessorList?.Accessors.Any(a => a.IsKind(SyntaxKind.GetAccessorDeclaration)) == true,
                 HasSetter = propertyDeclaration.AccessorList?.Accessors.Any(a => a.IsKind(SyntaxKind.SetAccessorDeclaration)) == true,
             };
+
+            InsertItemDeclarationInformation(compilation, tree, propertyDeclaration, newProperty);
+
+            return newProperty;
 
         }
 
@@ -132,9 +171,10 @@ namespace DocumentationGenerator
 
             var newMethod = new Method
             {
-                Name = methodDeclaration.Identifier.Text,
                 ReturnType = Visit(compilation, tree, methodDeclaration.ReturnType),
             };
+
+            InsertItemDeclarationInformation(compilation, tree, methodDeclaration, newMethod);
 
             foreach (var param in methodDeclaration.ParameterList.Parameters)
             {

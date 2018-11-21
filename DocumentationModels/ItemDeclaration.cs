@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DocumentationModels
 {
+    [DebuggerDisplay("{FullName}")]
     public abstract class ItemDeclaration
     {
         public string FullName { get; set; }
@@ -9,6 +11,7 @@ namespace DocumentationModels
         public DocumentationComment DocumentationComment { get; set; }
         public List<Attribute> Attributes { get; set; }
         public string Modifiers { get; set; }
+        public string ParentFullName { get; set; }
     }
 
     public class TypeReference

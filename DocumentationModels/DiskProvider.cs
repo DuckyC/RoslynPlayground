@@ -22,13 +22,18 @@ namespace DocumentationModels
         {
             if(Directory.Exists(path))
             {
-                Directory.Delete(path, true);
+                foreach (var f in Directory.EnumerateFiles(path).Where(f => Path.GetExtension(f) == "xml"))
+                {
+                    File.Delete(f);
+                }
+            } else
+            {
+                Directory.CreateDirectory(path);
             }
-            Directory.CreateDirectory(path);
             
             foreach (var ns in namespaces)
             {
-                using (var fs = File.Create(Path.Combine(path, ns.FullName + ".txt")))
+                using (var fs = File.Create(Path.Combine(path, ns.FullName + ".xml")))
                 {
                     Serializer.Serialize(fs, ns);
                 }
@@ -38,7 +43,17 @@ namespace DocumentationModels
 
         public static List<Namespace> Load(string path)
         {
-            return null;
+            var namespaces = new List<Namespace>();
+            foreach (var filePath in Directory.EnumerateFiles(path))
+            {
+                using (var fs = File.OpenRead(filePath))
+                {
+                    var ns = Serializer.Deserialize(fs) as Namespace;
+                    namespaces.Add(ns);
+                }
+            }
+
+            return namespaces;
         }
     }
 }
