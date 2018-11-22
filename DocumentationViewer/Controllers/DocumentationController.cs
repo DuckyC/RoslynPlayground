@@ -18,9 +18,14 @@ namespace DocumentationViewer.Controllers
         }
 
 
-
+        [ValidateInput(false)]
         public ActionResult Index(string FullName)
         {
+            if(string.IsNullOrWhiteSpace(FullName))
+            {
+                return View("NamespacesView", Namespaces); 
+            }
+
             var item = Namespaces.FindByFullName(FullName);
             if (item == null) { return HttpNotFound(); }
 

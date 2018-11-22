@@ -29,12 +29,13 @@ namespace DocumentationGenerator
     public class Documentation
     {
         public List<INodeInspectionHandler> NodeHandlers { get; set; } = new List<INodeInspectionHandler>();
-
-        public Documentation()
+        private string SolutionPath;
+        public Documentation(string solutionPath)
         {
             NodeHandlers.Add(new NodeInspectionHandler<ClassDeclarationSyntax>(ClassVisitor));
             NodeHandlers.Add(new NodeInspectionHandler<InterfaceDeclarationSyntax>(InterfaceVisitor));
             NodeHandlers.Add(new NodeInspectionHandler<EnumDeclarationSyntax>(EnumVisitor));
+            SolutionPath = solutionPath;
         }
 
         public Dictionary<string, Namespace> Namespaces { get; set; } = new Dictionary<string, Namespace>();
@@ -61,6 +62,26 @@ namespace DocumentationGenerator
                 item.DocumentationComment = Extensions.ParseDocumentationComment(symbol.GetDocumentationCommentXml());
             }
 
+            var attributes = node.ChildNodes().Where(c => c.IsKind(SyntaxKind.AttributeList));
+            foreach (AttributeListSyntax attrList in attributes)
+            {
+                foreach (var attr in attrList.Attributes)
+                {
+                    var symbolInfo = semanticModel.GetSymbolInfo(attr);
+                    item.Attributes.Add(new DocumentationModels.Attribute
+                    {
+                        Literal = attr.GetText().ToString(),
+                        FullName = symbolInfo.Symbol.ContainingType.GetFullName(),
+                        Name = symbolInfo.Symbol.ContainingType.GetTypeName(),
+                    });
+                }
+
+            }
+
+            var text = node.GetParentSyntax<CompilationUnitSyntax>().GetText();
+            item.LineNumber = (text?.Lines?.GetLineFromPosition(node.SpanStart + 2).LineNumber ?? -2) + 1;
+            item.FilePath = Extensions.MakeRelative(node.SyntaxTree.FilePath, SolutionPath);
+
             if (node is BaseTypeDeclarationSyntax baseType)
             {
                 item.Name = baseType.Identifier.Text;
@@ -84,6 +105,12 @@ namespace DocumentationGenerator
                 item.Modifiers = baseMethod.Modifiers.ToString();
             }
 
+            if (node is ConstructorDeclarationSyntax baseConstructor)
+            {
+                item.Name = baseConstructor.Identifier.Text;
+                item.Modifiers = baseConstructor.Modifiers.ToString();
+            }
+
             if (node.Parent is NamespaceDeclarationSyntax parentNamespace)
             {
                 item.ParentFullName = parentNamespace.Name.ToString();
@@ -93,11 +120,6 @@ namespace DocumentationGenerator
             {
                 item.ParentFullName = parentClass.GetFullName();
             }
-
-            //TODO: Add attributes
-
-
-
         }
 
         private TypeReference GetTypeReference(ITypeSymbol symbol)
@@ -188,6 +210,26 @@ namespace DocumentationGenerator
             return newMethod;
         }
 
+        private Constructor Visit(Compilation compilation, SyntaxTree tree, ConstructorDeclarationSyntax constructorDeclaration)
+        {
+            var semanticModel = compilation.GetSemanticModel(tree);
+            var symbol = semanticModel.GetDeclaredSymbol(constructorDeclaration);
+
+            var newConstructor = new Constructor();
+
+            InsertItemDeclarationInformation(compilation, tree, constructorDeclaration, newConstructor);
+
+            foreach (var param in constructorDeclaration.ParameterList.Parameters)
+            {
+                newConstructor.Parameters.Add(new MethodParameters
+                {
+                    Name = param.Identifier.Text,
+                    Type = Visit(compilation, tree, param.Type),
+                });
+            }
+
+            return newConstructor;
+        }
 
         private List<ItemDeclaration> VisitMembers(Compilation compilation, SyntaxTree tree, SyntaxNode node)
         {
@@ -206,6 +248,10 @@ namespace DocumentationGenerator
                 else if (item is MethodDeclarationSyntax methodDeclaration && methodDeclaration.IsPublic())
                 {
                     newItemDeclarations.Add(Visit(compilation, tree, methodDeclaration));
+                }
+                else if (item is ConstructorDeclarationSyntax constructorDeclaration && constructorDeclaration.IsPublic())
+                {
+                    newItemDeclarations.Add(Visit(compilation, tree, constructorDeclaration));
                 }
             }
 

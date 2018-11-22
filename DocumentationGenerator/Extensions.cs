@@ -9,15 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DocumentationModels.Property
-{
-
-}
-
 namespace DocumentationGenerator
 {
     public static class Extensions
     {
+        public static string MakeRelative(string filePath, string referencePath)
+        {
+            var fileUri = new Uri(filePath);
+            var referenceUri = new Uri(referencePath);
+            return referenceUri.MakeRelativeUri(fileUri).ToString();
+        }
+
+
         public const string NESTED_CLASS_DELIMITER = "+";
         public const string NAMESPACE_CLASS_DELIMITER = ".";
 
@@ -52,14 +55,6 @@ namespace DocumentationGenerator
 
             return node.Identifier.Text;
         }
-
-        //public static string GetFullName(this BasePropertyDeclarationSyntax node)
-        //{
-        //    if (node.Parent is BaseTypeDeclarationSyntax baseType)
-        //    {
-        //        return baseType.GetFullName() + 
-        //    }
-        //}
 
         public static string GetTypeName(this ITypeSymbol s)
         {
@@ -101,7 +96,6 @@ namespace DocumentationGenerator
                     sb.Insert(0, '.');
                 }
 
-                //sb.Insert(0, s.OriginalDefinition.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
                 sb.Insert(0, s.Name);
                 s = s.ContainingSymbol;
             }

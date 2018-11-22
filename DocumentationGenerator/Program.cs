@@ -32,7 +32,8 @@ namespace DocumentationGenerator
             //       otherwise, MSBuildWorkspace won't MEF compose.
             MSBuildLocator.RegisterInstance(instance);
 
-            documentation = new Documentation();
+            var projectPath = args[0];
+            documentation = new Documentation(projectPath);
 
             var properties = new Dictionary<string, string>
             {
@@ -43,8 +44,7 @@ namespace DocumentationGenerator
                 // Print message for WorkspaceFailed event to help diagnosing project load failures.
                 workspace.WorkspaceFailed += (o, e) => Console.WriteLine(e.Diagnostic.Message);
 
-                var projectPath = args[0];
-                Console.WriteLine($"Loading project '{projectPath}'");
+                Console.WriteLine($"Loading solution '{projectPath}'");
 
                 // Attach progress reporter so we print projects as they are loaded.
                 var solution = await workspace.OpenSolutionAsync(projectPath, new ConsoleProgressReporter());

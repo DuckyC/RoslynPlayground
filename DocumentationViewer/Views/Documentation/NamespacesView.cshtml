@@ -1,0 +1,20 @@
+﻿@model IEnumerable<DocumentationModels.Namespace>
+
+@{
+    ViewBag.Title = "NamespacesView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Namespaces</h2>
+
+
+<table class="table">
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.FullName, "Index", new { FullName = item.FullName })
+        </td>
+    </tr>
+}
+
+</table>

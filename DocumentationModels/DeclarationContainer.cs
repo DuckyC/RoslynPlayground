@@ -15,6 +15,7 @@ namespace DocumentationModels
         [XmlElement(nameof(Field), type: typeof(Field))]
         [XmlElement(nameof(Property), type: typeof(Property))]
         [XmlElement(nameof(Method), type: typeof(Method))]
+        [XmlElement(nameof(Constructor), type: typeof(Constructor))]
         public List<ItemDeclaration> Declarations { get; set; } = new List<ItemDeclaration>();
     }
 }

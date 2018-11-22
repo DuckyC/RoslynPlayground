@@ -9,9 +9,11 @@ namespace DocumentationModels
         public string FullName { get; set; }
         public string Name { get; set; }
         public DocumentationComment DocumentationComment { get; set; }
-        public List<Attribute> Attributes { get; set; }
+        public List<Attribute> Attributes { get; set; } = new List<Attribute>();
         public string Modifiers { get; set; }
         public string ParentFullName { get; set; }
+        public int LineNumber { get; set; }
+        public string FilePath { get; set; }
     }
 
     public class TypeReference

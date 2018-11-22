@@ -6,6 +6,7 @@
     <h4>@Model.Instance.Name Class</h4>
     <h5>Namespace: @Html.ActionLink(Model.Instance.ParentFullName, "Index", new { FullName = Model.Instance.ParentFullName })</h5>
     <hr />
+    <pre><code class="csharp">@Model.DeclarationLiteral</code></pre>
     <p>
         @Model.Summary
     </p>
