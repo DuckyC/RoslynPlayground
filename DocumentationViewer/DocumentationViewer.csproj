@@ -162,6 +162,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DocumentationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -172,6 +173,7 @@
     <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\MethodViewModel.cs" />
     <Compile Include="Models\NamespaceViewModel.cs" />
+    <Compile Include="Models\SearchItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +225,8 @@
     <Content Include="Views\Documentation\NamespaceView.cshtml" />
     <Content Include="Views\Shared\_ItemList.cshtml" />
     <Content Include="Views\Documentation\NamespacesView.cshtml" />
+    <Content Include="Views\Shared\_SearchResults.cshtml" />
+    <Content Include="Views\Shared\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

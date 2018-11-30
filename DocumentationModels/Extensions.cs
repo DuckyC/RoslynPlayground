@@ -41,6 +41,29 @@ namespace DocumentationModels
             return null;
         }
 
+        public static List<ItemDeclaration> SearchTree(this ItemDeclaration item, Func<ItemDeclaration, bool> func)
+        {
+            var foundList = new List<ItemDeclaration>();
+            if (func(item))
+            {
+                foundList.Add(item);
+            }
+
+            if(item is DeclarationContainer container)
+            {
+                foreach (var childItem in container.Declarations)
+                {
+                    var moreFound = SearchTree(childItem, func);
+                    if(moreFound != null)
+                    {
+                        foundList.AddRange(moreFound);
+                    }
+                }
+            }
+
+            return foundList;
+        }
+
 
     }
 }

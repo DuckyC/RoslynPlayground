@@ -79,7 +79,7 @@ namespace DocumentationGenerator
             }
 
             var text = node.GetParentSyntax<CompilationUnitSyntax>().GetText();
-            item.LineNumber = (text?.Lines?.GetLineFromPosition(node.SpanStart + 2).LineNumber ?? -2) + 1;
+            item.LineNumber = (text?.Lines?.GetLineFromPosition(node.Span.Start).LineNumber ?? -2) + 1;
             item.FilePath = Extensions.MakeRelative(node.SyntaxTree.FilePath, SolutionPath);
 
             if (node is BaseTypeDeclarationSyntax baseType)

@@ -10,6 +10,7 @@ namespace DocumentationModels
     {
         public TypeReference ReturnType { get; set; }
         public List<MethodParameters> Parameters { get; set; } = new List<MethodParameters>();
+        public List<TypeParameters> TypeParameters { get; set; }
 
     }
 
@@ -19,7 +20,6 @@ namespace DocumentationModels
         public string DefaultValue { get; set; }
         public bool HasDefaultValue { get; set; }
 
-        public List<TypeParameters> TypeParameters { get; set; }
     }
 
     public class Constructor : Method

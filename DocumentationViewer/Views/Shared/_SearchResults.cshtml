@@ -1,0 +1,11 @@
+﻿@model IEnumerable<DocumentationViewer.Models.SearchItemViewModel>
+
+<table class="table">
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.DisplayName, "Index", new { FullName = item.FullName  }) 
+        </td>
+    </tr>
+}
+</table>

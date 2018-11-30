@@ -3,10 +3,37 @@
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
+.container {
     padding-left: 15px;
     padding-right: 15px;
+    display: flex;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.left-sidebar {
+    width: 164px;
+    flex-shrink: 0;
+    display: block;
+}
+
+#searchtextbox {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#searchresult {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    width: 1100px;
+    display: block;
+    padding-left: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 

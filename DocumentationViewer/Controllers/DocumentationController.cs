@@ -40,5 +40,27 @@ namespace DocumentationViewer.Controllers
 
             throw new HttpException($"Type unsupported - ${FullName}(${item.GetType()})");
         }
+
+        [ValidateInput(false)]
+        public ActionResult Search(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return new EmptyResult();
+            }
+
+            var foundList = new List<ItemDeclaration>();
+
+            foreach (var ns in DocumentationController.Namespaces)
+            {
+                foundList.AddRange(ns.SearchTree(i => i.FullName.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0));
+                foundList.AddRange(ns.SearchTree(i => i.FilePath?.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0));
+                foundList.AddRange(ns.SearchTree(i => i.Attributes?.Any(a => a.Literal.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0) == true));
+                foundList.AddRange(ns.SearchTree(i => i.DocumentationComment?.Summary?.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0));
+            }
+
+            var list = foundList.Select(i => new SearchItemViewModel { DisplayName = i.Name, FullName = i.FullName }).ToList();
+            return PartialView("~/Views/Shared/_SearchResults.cshtml", list);
+        }
     }
 }

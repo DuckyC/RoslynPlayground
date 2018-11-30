@@ -1,0 +1,24 @@
+﻿
+<input type="text" id="searchtextbox" placeholder="Search" />
+<div id="searchresult">
+
+</div>
+
+<script>
+    var timeoutHandle;
+    console.log($);
+    $("#searchtextbox").keyup(function () {
+        clearTimeout(timeoutHandle);
+        timeoutHandle = setTimeout(function () {
+            $.ajax({
+                url: '@Url.Action("Search", "Documentation")?s=' + $("#searchtextbox").val(), 
+                contentType: "text/html",
+                success: function (data) {
+                    console.log("search result", data);
+                    $("#searchresult").html(data);
+                },
+                error: console.log
+            });
+        }, 200);
+    });
+</script>    
