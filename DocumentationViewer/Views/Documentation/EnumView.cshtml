@@ -1,0 +1,57 @@
+﻿@using DocumentationViewer.Models
+@model EnumViewModel
+
+
+<div>
+    <h4>@Model.Instance.Name Enum</h4>
+    <h5>Namespace: @Html.ActionLink(Model.Instance.ParentFullName, "Index", new { FullName = Model.Instance.ParentFullName })</h5>
+    <hr />
+    <pre><code class="csharp">@Model.DeclarationLiteral</code></pre>
+    <p>
+        @Model.Summary
+    </p>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instance.Modifiers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instance.Modifiers)
+        </dd>
+    </dl>
+
+    <h4>Fields</h4>
+    <table class="table">
+        @foreach (var item in Model.Fields)
+        {
+            <tr>
+                <td>
+                    @item.DisplayName
+                </td>
+                <td>
+                    @item.Instance.Value
+                </td>
+                <td>
+                    @item.Summary
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

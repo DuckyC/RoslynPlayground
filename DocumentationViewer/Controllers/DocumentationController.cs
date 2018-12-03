@@ -37,7 +37,26 @@ namespace DocumentationViewer.Controllers
             {
                 return View("ClassView", new ClassViewModel(classInstance));
             }
-
+            else if(item is Interface interfaceInstance)
+            {
+                return View("InterfaceView", new InterfaceViewModel(interfaceInstance));
+            }
+            else if(item is Method methodInstance)
+            {
+                return View("MethodView", new MethodViewModel(methodInstance));
+            }
+            else if(item is DocumentationModels.Enum enumInstance)
+            {
+                return View("EnumView", new EnumViewModel(enumInstance));
+            }
+            else if(item is Property propertyInstance)
+            {
+                return View("PropertyView", new PropertyViewModel(propertyInstance));
+            }
+            else if(item is Field fieldInstance)
+            {
+                return View("FieldView", new FieldViewModel(fieldInstance));
+            }
             throw new HttpException($"Type unsupported - ${FullName}(${item.GetType()})");
         }
 

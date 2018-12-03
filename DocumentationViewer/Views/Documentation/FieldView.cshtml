@@ -1,0 +1,18 @@
+﻿@using DocumentationViewer.Models
+@model FieldViewModel
+
+
+<div>
+    <h4>@Model.Instance.Name Field</h4>
+    <h5>Namespace: @Html.ActionLink(Model.Instance.ParentFullName, "Index", new { FullName = Model.Instance.ParentFullName })</h5>
+    <hr />
+    <pre><code class="csharp">@Model.DeclarationLiteral</code></pre>
+    <p>
+        @Model.Summary
+    </p>
+    
+    <h5><b>Field Value</b></h5>
+    @Html.ActionLink(Model.Instance.Type.Name, "Index", new { FullName = Model.Instance.Type.FullName })
+
+
+</div>

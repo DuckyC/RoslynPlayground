@@ -217,6 +217,12 @@ namespace DocumentationGenerator
 
             var newConstructor = new Constructor();
 
+            var parentSymbol = semanticModel.GetDeclaredSymbol(constructorDeclaration.Parent);
+            newConstructor.ReturnType = new TypeReference
+            {
+                Name = (constructorDeclaration.Parent as ClassDeclarationSyntax).Identifier.Text,
+                FullName = parentSymbol.ToString(),
+            };
             InsertItemDeclarationInformation(compilation, tree, constructorDeclaration, newConstructor);
 
             foreach (var param in constructorDeclaration.ParameterList.Parameters)

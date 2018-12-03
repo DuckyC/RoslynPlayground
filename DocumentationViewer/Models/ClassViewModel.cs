@@ -14,9 +14,7 @@ namespace DocumentationViewer.Models
         {
             get
             {
-                var attributes = string.Join("\n", Instance.Attributes.Select(a => "[" + a.Literal + "]\n")) + "\n";
-
-                return attributes + Instance.Modifiers + " class " + Instance.Name;
+                return AttributesLiteral + Instance.Modifiers + " class " + Instance.Name;
             }
         }
 
@@ -40,6 +38,6 @@ namespace DocumentationViewer.Models
         }
         public List<ItemViewModel<Field>> Fields => Instance.Declarations.OfType<Field>().Select(f => new ItemViewModel<Field>(f)).ToList();
         public List<ItemViewModel<Property>> Properties => Instance.Declarations.OfType<Property>().Select(p => new ItemViewModel<Property>(p)).ToList();
-        public List<MethodViewModel> Methods => Instance.Declarations.OfType<Method>().Select(m => new MethodViewModel(m)).ToList();
+        public List<MethodViewModel> Methods => Instance.Declarations.Where(d=>d.GetType() == typeof(Method)).OfType<Method>().Select(m => new MethodViewModel(m)).ToList();
     }
 }

@@ -16,10 +16,12 @@ namespace DocumentationViewer.Models
     public class ItemViewModel<T> : ItemViewModel where T : ItemDeclaration
     {
 
-        public override string Summary => Instance.DocumentationComment?.Summary;
+        public override string Summary => Instance.DocumentationComment?.Summary ?? "";
         public override ItemDeclaration ItemInstance => Instance;
 
         public override string DisplayName => ItemInstance.Name;
+
+        public string AttributesLiteral => string.Join("\n", Instance.Attributes.Select(a => "[" + a.Literal + "]\n")) + "\n";
 
         public T Instance { get; private set; }
         public ItemViewModel(T instance)

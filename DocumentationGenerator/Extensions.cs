@@ -156,10 +156,10 @@ namespace DocumentationGenerator
             return comment;
         }
 
-        public static bool IsPublic(this BaseFieldDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)); }
-        public static bool IsPublic(this BasePropertyDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)); }
-        public static bool IsPublic(this BaseMethodDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)); }
-        public static bool IsPublic(this BaseTypeDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)); }
+        public static bool IsPublic(this BaseFieldDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)) || node.Parent.IsKind(SyntaxKind.InterfaceDeclaration); }
+        public static bool IsPublic(this BasePropertyDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)) || node.Parent.IsKind(SyntaxKind.InterfaceDeclaration); }
+        public static bool IsPublic(this BaseMethodDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)) || node.Parent.IsKind(SyntaxKind.InterfaceDeclaration); }
+        public static bool IsPublic(this BaseTypeDeclarationSyntax node) { return node.Modifiers.Any(m => m.IsKind(SyntaxKind.PublicKeyword)) || node.Parent.IsKind(SyntaxKind.InterfaceDeclaration); }
     }
 }
 

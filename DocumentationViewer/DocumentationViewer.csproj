@@ -162,17 +162,18 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DocumentationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\InterfaceViewModel.cs" />
     <Compile Include="Models\ClassViewModel.cs" />
     <Compile Include="Models\DeclarationListViewModel.cs" />
     <Compile Include="Models\EnumViewModel.cs" />
-    <Compile Include="Models\InterfaceViewModel.cs" />
     <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\MethodViewModel.cs" />
     <Compile Include="Models\NamespaceViewModel.cs" />
+    <Compile Include="Models\FieldViewModel.cs" />
+    <Compile Include="Models\PropertyViewModel.cs" />
     <Compile Include="Models\SearchItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -227,6 +228,11 @@
     <Content Include="Views\Documentation\NamespacesView.cshtml" />
     <Content Include="Views\Shared\_SearchResults.cshtml" />
     <Content Include="Views\Shared\_Search.cshtml" />
+    <Content Include="Views\Documentation\InterfaceView.cshtml" />
+    <Content Include="Views\Documentation\MethodView.cshtml" />
+    <Content Include="Views\Documentation\EnumView.cshtml" />
+    <Content Include="Views\Documentation\PropertyView.cshtml" />
+    <Content Include="Views\Documentation\FieldView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
